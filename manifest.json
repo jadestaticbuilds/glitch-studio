@@ -31,6 +31,6 @@
   "name": "Glitch Studio",
   "scope": "./",
   "short_name": "Glitch Studio",
-  "start_url": "./index-pwa.html",
+  "start_url": "./",
   "theme_color": "#04070d"
 }

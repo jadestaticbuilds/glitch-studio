@@ -1,6 +1,6 @@
 /* Glitch Studio service worker: cache the app shell so the installed app opens offline. Photos are never uploaded; nothing here touches user photos. */
-const CACHE = 'glitch-studio-v21';
-const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-192-maskable.png', './icon-512-maskable.png'];
+const CACHE = 'glitch-studio-v22';
+const FILES = ['./index-pwa.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-192-maskable.png', './icon-512-maskable.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -27,7 +27,7 @@ self.addEventListener('fetch', (e) => {
             if (isShell) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(e.request, copy)); }
           }
           return res;
-        }).catch(() => caches.match('./index.html'))
+        }).catch(() => caches.match('./index-pwa.html'))
     )
   );
 });

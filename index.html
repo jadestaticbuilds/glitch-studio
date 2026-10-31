@@ -212,6 +212,22 @@ main section[data-panel]{position:static;margin:0;max-height:42dvh;overflow-y:au
 #splitRow{position:static;margin:0;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 0 0 1px var(--line)}
 #fbx{position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);z-index:30;margin:0;max-height:50dvh;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px}
 body.sheet-hidden main{display:none}
+/* --- Desktop pilot (Tier 5 desktop-readiness): everything in this block only
+   applies at 1024px and up. Phone CSS above is untouched. Pattern: center a
+   max-width column, widen the effect grids, keep the flex viewport behavior. */
+@media (min-width:1024px){
+ body{align-items:center}
+ .top,main,.bottombar{width:100%;max-width:1000px}
+ #fxStrip{grid-template-columns:repeat(8,1fr)}
+ .tool-row button{flex:1 1 18%}
+ .seg button{flex:1 1 22%}
+ .effect-row{grid-template-columns:repeat(4,1fr)}
+ .bar h1{font-size:22px}
+}
+@media (min-width:1440px){
+ .top,main,.bottombar{max-width:1280px}
+ #fxStrip{grid-template-columns:repeat(10,1fr)}
+}
 </style>
 </head>
 <body>

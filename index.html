@@ -839,9 +839,17 @@ function buildSaveImage(){
  if(wasPreview){draw()}
  return {out:out,mime:fmt==='jpeg'?'image/jpeg':'image/png',ext:fmt==='jpeg'?'jpg':'png',quality:fmt==='jpeg'?0.92:undefined};
 }
+// Busy indicator for the full-size render: the finished render blocks the
+// UI thread on heavy effects, so paint "Rendering…" first and yield before
+// the blocking work, keeping the app from looking frozen on phones.
+function busyRender(msg,work){
+ msg.textContent='Rendering…';
+ requestAnimationFrame(function(){setTimeout(work,30)});
+}
 $('#save').onclick=function(){
  var msg=$('#msg');
  if(!src){msg.textContent='Choose a photo first.';return}
+ busyRender(msg,function(){
  var built=buildSaveImage();
  var out=built.out,mime=built.mime,ext=built.ext,quality=built.quality;
  function fbk(why){$('#fb').src=out.toDataURL(mime,quality);$('#fbx').hidden=false;msg.textContent=why+' Press and hold the image below, then choose Download image.';/* #fbx is now a popover above the controls, so no scrolling is needed */}
@@ -852,6 +860,7 @@ $('#save').onclick=function(){
   // so on iOS also show the finished image below for a press-and-hold save.
   if(/iPad|iPhone|iPod/.test(navigator.userAgent)){ $('#fb').src=out.toDataURL(mime,quality);$('#fbx').hidden=false;msg.textContent='Saved. If no download appeared, press and hold the image below, then choose Save to Photos.'; }
  },mime,quality);
+ });
 };
 // Share: shares the currently edited image (the same finished render
 // Save uses), only when the browser actually supports file sharing.
@@ -872,6 +881,7 @@ $('#save').onclick=function(){
  shareBtn.onclick=function(){
   var msg=$('#msg');
   if(!src){msg.textContent='Choose a photo first.';return}
+  busyRender(msg,function(){
   var built=buildSaveImage();
   built.out.toBlob(function(b){
    if(!b){msg.textContent='Could not prepare the image to share. Try Save instead.';return}
@@ -885,6 +895,7 @@ $('#save').onclick=function(){
     msg.textContent='Share was not completed. Use Save instead.';
    });
   },built.mime,built.quality);
+  });
  };
 })();
 // Dead Claude-downloads integration removed: it did nothing in a normal browser. Save now always uses the standard download/fallback path below.

@@ -147,6 +147,11 @@ h2{font-size:12px;margin:0 0 6px}
 .stack-chip button{background:none;border:0;min-height:28px;min-width:0;padding:0 6px;color:var(--ink);cursor:pointer}
 .stack-chip button.chip-x{flex:none;border-radius:50%;background:var(--chk1);min-width:28px}
 .stack-empty{font-size:13px;color:var(--mute)}
+/* Saved looks: five named slots */
+.look-row{display:flex;gap:8px;margin-bottom:8px;align-items:stretch}
+.look-row .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.look-empty{flex:1;border-style:dashed;color:var(--mute)}
+.look-icon{flex:none;min-width:48px;font-size:18px}
 .simple-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 #simpleOff{min-height:34px;padding:0 10px;font-size:13px;white-space:nowrap}
 #simplePanel .acts button{min-height:36px}
@@ -294,9 +299,8 @@ body.sheet-hidden main{display:none}
   <!-- Presets: one-tap starting points built only from existing settings. They reset other effects to the defaults first, so each preset is predictable. -->
   <section data-panel="presets" hidden><h2>Presets</h2>
     <div class="acts"><button id="presetKal">Kaleidoscope</button><button id="presetVintage">Vintage glitch</button><button id="presetPixel">Pixel look</button><button id="presetVHS">VHS</button></div>
-    <p style="font-size:14px;color:var(--mute);margin:12px 0 8px">Your saved looks: only the recipe is saved, never the photo. Tap a saved look to apply it to the current photo.</p>
-    <div class="acts"><button id="saveLook">Save this look</button><button id="removeLook">Remove last saved look</button></div>
-    <div class="acts" id="myLooks" style="margin-top:8px"></div>
+    <p style="font-size:14px;color:var(--mute);margin:12px 0 8px">Your saved looks: five slots, only the recipe is saved, never the photo. Tap a saved look to apply it to the current photo.</p>
+    <div id="myLooks" style="margin-top:8px"></div>
   </section>
   <section data-panel="seed" hidden><h2>Seed, intensity and locks</h2>
     <div class="row"><label><span>Seed (same seed = same glitch)</span><b id="seedVal"></b></label><input type="range" id="seedRange" min="1" max="100" value="1" aria-label="Glitch seed" style="width:100%"></div>
@@ -438,14 +442,83 @@ $('#presetKal').onclick=function(){applyPreset({kal:8,kr:45,sat:120})};
 $('#presetVintage').onclick=function(){applyPreset({blocks:35,bs:32,smear:25,sd:'h',trails:3,td:15,ta:0,noise:20,scan:30,post:4,hue:20,sat:90,wave:10})};
 $('#presetPixel').onclick=function(){applyPreset({pix:16,post:5,sat:130,noise:5})};
 $('#presetVHS').onclick=function(){applyPreset({scan:50,noise:25,rgb:12,wave:20,sat:110})};
-// --- Save this look: user-named recipes only, no photo stored, this device only. ---
+// --- Saved looks: five named slots, one-tap apply. Recipe only, never the photo, this device only. ---
 function currentRecipe(){return {settings:JSON.parse(JSON.stringify(S)),intensity:intensity,text:txtText,textSize:txtSize,textPos:txtPos,textColor:txtColor};}
-function loadLooks(){try{var l=JSON.parse(localStorage.getItem('gs-my-looks'));return Array.isArray(l)?l.filter(function(x){return x&&x.name&&x.recipe&&x.recipe.settings;}):[];}catch(e){return [];}}
-function saveLooks(list){try{localStorage.setItem('gs-my-looks',JSON.stringify(list));}catch(e){$('#msg').textContent='Could not save that look on this device.';}}
+var LOOK_SLOTS=5;
+function blankLooks(){var a=[];for(var i=0;i<LOOK_SLOTS;i++)a.push(null);return a;}
+function validLook(x){return x&&typeof x.name==='string'&&x.recipe&&x.recipe.settings;}
+function loadLooks(){
+  var slots=blankLooks();
+  try{
+    var raw=JSON.parse(localStorage.getItem('gs-my-looks'));
+    if(raw&&raw.v===2&&Array.isArray(raw.slots)){
+      for(var i=0;i<LOOK_SLOTS;i++)slots[i]=validLook(raw.slots[i])?{name:String(raw.slots[i].name).slice(0,40),recipe:raw.slots[i].recipe}:null;
+      return slots;
+    }
+    if(Array.isArray(raw)){
+      var olds=raw.filter(validLook).slice(0,LOOK_SLOTS);
+      for(var j=0;j<olds.length;j++)slots[j]={name:String(olds[j].name).slice(0,40),recipe:olds[j].recipe};
+      saveLooks(slots);
+    }
+  }catch(e){}
+  return slots;
+}
+function saveLooks(slots){try{localStorage.setItem('gs-my-looks',JSON.stringify({v:2,slots:slots}));}catch(e){$('#msg').textContent='Could not save that look on this device.';}}
 function applyLook(recipe){S=Object.assign({},S0,recipe.settings);if(!recipe.settings.brush)S.brush=[];if(recipe.intensity)intensity=recipe.intensity;if(recipe.text!==undefined)txtText=recipe.text;if(recipe.textSize)txtSize=recipe.textSize;if(recipe.textPos)txtPos=recipe.textPos;if(recipe.textColor)txtColor=recipe.textColor;document.getElementById('txtText').value=txtText;sync();draw();push();}
-function renderLooks(){var wrap=document.getElementById('myLooks');if(!wrap)return;wrap.innerHTML='';var looks=loadLooks();if(!looks.length){var h=document.createElement('p');h.style.cssText='font-size:13px;color:var(--mute);margin:0';h.textContent='No saved looks yet. Dial in something filthy, then hit Save this look.';wrap.appendChild(h);return;}looks.forEach(function(item){var b=document.createElement('button');b.textContent=item.name;b.onclick=function(){if(!src){$('#msg').textContent='Choose a photo first.';return;}applyLook(item.recipe);$('#msg').textContent='Look applied: '+item.name;};wrap.appendChild(b);});}
-$('#saveLook').onclick=function(){var list=loadLooks();if(list.length>=12){$('#msg').textContent='You already have 12 saved looks. Remove the last one first to save another.';return;}var name=prompt('Name this look:');if(!name)return;name=name.trim().slice(0,40);if(!name)return;list.push({name:name,recipe:currentRecipe()});saveLooks(list);renderLooks();$('#msg').textContent='Look saved: '+name;};
-$('#removeLook').onclick=function(){var list=loadLooks();if(!list.length){$('#msg').textContent='No saved looks to remove.';return;}var removed=list.pop();saveLooks(list);renderLooks();$('#msg').textContent='Removed saved look: '+removed.name;};
+function renderLooks(){
+  var wrap=document.getElementById('myLooks');if(!wrap)return;wrap.innerHTML='';
+  var slots=loadLooks();
+  slots.forEach(function(item,i){
+    var row=document.createElement('div');row.className='look-row';
+    if(!item){
+      var s=document.createElement('button');s.className='look-empty';s.style.minHeight='48px';
+      s.textContent='+ Save current look in slot '+(i+1);
+      s.setAttribute('aria-label','Save current look in slot '+(i+1));
+      s.onclick=function(){
+        var sl=loadLooks();sl[i]={name:'Look '+(i+1),recipe:currentRecipe()};saveLooks(sl);renderLooks();
+        $('#msg').textContent='Look saved in slot '+(i+1)+'. Tap the pencil to rename it.';
+      };
+      row.appendChild(s);
+    }else{
+      var b=document.createElement('button');b.className='grow';b.style.minHeight='48px';
+      b.textContent=item.name;b.setAttribute('aria-label','Apply look '+item.name);
+      b.onclick=function(){if(!src){$('#msg').textContent='Choose a photo first.';return;}applyLook(item.recipe);$('#msg').textContent='Look applied: '+item.name;};
+      var rn=document.createElement('button');rn.className='look-icon';rn.style.minHeight='48px';
+      rn.textContent='\u270F';rn.setAttribute('aria-label','Rename look '+item.name);rn.title='Rename';
+      rn.onclick=function(){startRename(row,i,item);};
+      var del=document.createElement('button');del.className='look-icon';del.style.minHeight='48px';
+      del.textContent='\u00D7';del.setAttribute('aria-label','Delete look '+item.name);del.title='Delete';
+      del.onclick=function(){var sl=loadLooks();sl[i]=null;saveLooks(sl);renderLooks();$('#msg').textContent='Slot '+(i+1)+' cleared.';};
+      row.appendChild(b);row.appendChild(rn);row.appendChild(del);
+    }
+    wrap.appendChild(row);
+  });
+}
+function startRename(row,i,item){
+  row.innerHTML='';
+  var inp=document.createElement('input');
+  inp.type='text';inp.value=item.name;inp.maxLength=40;
+  inp.setAttribute('aria-label','New name for look in slot '+(i+1));
+  inp.style.cssText='flex:1;min-width:0;min-height:48px;font-size:16px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--surface);color:var(--ink)';
+  var ok=document.createElement('button');ok.className='look-icon';ok.style.minHeight='48px';
+  ok.textContent='\u2713';ok.setAttribute('aria-label','Confirm rename');ok.title='Done';
+  var cx=document.createElement('button');cx.className='look-icon';cx.style.minHeight='48px';
+  cx.textContent='\u00D7';cx.setAttribute('aria-label','Cancel rename');cx.title='Cancel';
+  var done=false;
+  function commit(save){
+    if(done)return;done=true;
+    if(save){var v=inp.value.trim().slice(0,40);if(v){var sl=loadLooks();if(validLook(sl[i])){sl[i].name=v;saveLooks(sl);$('#msg').textContent='Look renamed: '+v;}}}
+    renderLooks();
+  }
+  ok.addEventListener('mousedown',function(e){e.preventDefault();});
+  cx.addEventListener('mousedown',function(e){e.preventDefault();});
+  ok.onclick=function(){commit(true);};
+  cx.onclick=function(){commit(false);};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')commit(true);else if(e.key==='Escape')commit(false);e.stopPropagation();});
+  inp.addEventListener('blur',function(){commit(true);});
+  row.appendChild(inp);row.appendChild(ok);row.appendChild(cx);
+  inp.focus();inp.select();
+}
 renderLooks();
 $('#shuffle').onclick=function(){S.seed=(Math.random()*1e6)|0;draw();push()};
 function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}

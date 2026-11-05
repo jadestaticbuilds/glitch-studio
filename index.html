@@ -134,7 +134,7 @@ h2{font-size:12px;margin:0 0 6px}
 .effect-card.active::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
 .effect-card.on.active::before{background:#02131a}
 .tool-row{margin:6px 0}
-.tool-row button{min-height:36px;font-size:13px;padding:0 8px}
+.tool-row button{min-height:44px;font-size:13px;padding:0 8px}
 /* Stack-bar fix: chips used to be a single non-wrapping row with
    overflow hidden, so on a narrow phone the later chips and their ×
    buttons were clipped off and unreachable. Chips now wrap onto a
@@ -142,10 +142,10 @@ h2{font-size:12px;margin:0 0 6px}
    the photo stage above only shrinks, never scrolls or gets covered). */
 .stack-bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:4px;min-height:30px;max-height:96px;overflow-y:auto;overflow-x:visible}
 .stack-chip{font-size:12px}
-.stack-chip button{min-height:26px}
+.stack-chip button{min-height:44px}
 .stack-chip{display:inline-flex;align-items:center;gap:4px;flex:0 1 auto;min-width:0;max-width:100%;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 4px 4px 10px;font-size:13px}
-.stack-chip button{background:none;border:0;min-height:28px;min-width:0;padding:0 6px;color:var(--ink);cursor:pointer}
-.stack-chip button.chip-x{flex:none;border-radius:50%;background:var(--chk1);min-width:28px}
+.stack-chip button{background:none;border:0;min-height:44px;min-width:0;padding:0 6px;color:var(--ink);cursor:pointer}
+.stack-chip button.chip-x{flex:none;border-radius:50%;background:var(--chk1);min-width:44px}
 .stack-empty{font-size:13px;color:var(--mute)}
 /* Saved looks: five named slots */
 .look-row{display:flex;gap:8px;margin-bottom:8px;align-items:stretch}
@@ -153,8 +153,8 @@ h2{font-size:12px;margin:0 0 6px}
 .look-empty{flex:1;border-style:dashed;color:var(--mute)}
 .look-icon{flex:none;min-width:48px;font-size:18px}
 .simple-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-#simpleOff{min-height:34px;padding:0 10px;font-size:13px;white-space:nowrap}
-#simplePanel .acts button{min-height:36px}
+#simpleOff{min-height:44px;padding:0 10px;font-size:13px;white-space:nowrap}
+#simplePanel .acts button{min-height:44px}
 #cv{touch-action:none;cursor:crosshair}
 /* --- Big-photo overhaul: flex viewport, dominant stage, compact bottom sheet --- */
 html,body{height:100%}
@@ -178,23 +178,23 @@ main{flex:none;position:relative;overflow:visible;padding:8px 10px 6px;z-index:5
 .top{padding:calc(6px + env(safe-area-inset-top,0px)) max(10px, env(safe-area-inset-right,0px)) 6px max(10px, env(safe-area-inset-left,0px))}
 .bar{flex-wrap:wrap;gap:6px;align-items:center}
 .bar h1{font-size:18px;flex:1 1 auto;min-width:0;white-space:nowrap;letter-spacing:0}
-.top .bar button,.top .bar label#pick{min-height:38px;font-size:13px;padding:0 10px;flex:0 1 auto;white-space:nowrap;max-width:100%}
+.top .bar button,.top .bar label#pick{min-height:44px;font-size:13px;padding:0 10px;flex:0 1 auto;white-space:nowrap;max-width:100%}
 .top .bar label#pick{flex:1 1 132px;justify-content:center;text-align:center}
 .bottombar{position:static;flex:none;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
-.bottombar button{min-height:40px}
+.bottombar button{min-height:44px}
 #effectPicker{display:none}
 #cycleBar{display:flex;gap:6px;align-items:center;margin-bottom:6px}
-#cycleBar button{min-height:38px;padding:0 10px}
+#cycleBar button{min-height:44px;padding:0 10px}
 #cycleName{flex:1;text-align:center;font-weight:600}
 #fxStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;overflow:hidden;padding:0 0 2px}
-#fxStrip button{flex:none;min-width:0;width:100%;min-height:36px;padding:0 2px;font-size:11px;line-height:1.15;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fxStrip button{flex:none;min-width:0;width:100%;min-height:44px;padding:0 2px;font-size:12px;line-height:1.15;border-radius:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #fxStrip button.on{background:linear-gradient(135deg,#ff2e88,#00f0ff);color:#02131a;border-color:transparent}
 #fxStrip button.active{box-shadow:0 0 0 2px var(--accent) inset}
 #simplePanel .row{margin:6px 0 2px}
 #simplePanel input[type=range]{height:32px}
-#simplePanel .acts button{min-height:34px}
+#simplePanel .acts button{min-height:44px}
 #moreWrap{margin-top:8px}
-#moreWrap button{min-height:38px}
+#moreWrap button{min-height:44px}
 #moreControls section{margin:0}
 #toolsDrawer{margin-bottom:6px}
 #fsExit{display:none}
@@ -219,11 +219,12 @@ body.sheet-hidden #sheetExit{display:block;position:fixed;right:10px;bottom:calc
 body.editing #fxStrip{display:none!important}
 body.tool-open #fxStrip{display:none!important}
 body.tool-open #simplePanel{display:none!important}
-#simpleDone{min-height:34px;padding:0 10px;font-size:13px;white-space:nowrap}
+#simpleDone{min-height:44px;padding:0 10px;font-size:13px;white-space:nowrap}
 main section[data-panel]{position:static;margin:0;max-height:42dvh;overflow-y:auto;box-shadow:0 0 0 1px var(--line)}
 #toolsDrawer{position:static;margin:0;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 0 0 1px var(--line)}
 #splitRow{position:static;margin:0;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 0 0 1px var(--line)}
 #fbx{position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);z-index:30;margin:0;max-height:50dvh;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px}
+#fbxClose{display:block;margin:0 0 6px auto;min-width:44px;min-height:44px;border-radius:50%;background:var(--chk1);color:var(--ink);font-size:22px;line-height:1;padding:0}
 body.sheet-hidden main{display:none}
 /* --- Desktop side-panel layout (Tier 5 desktop-readiness): everything in this
    block only applies at 1024px and up. Phone CSS above is untouched.
@@ -291,7 +292,7 @@ body.sheet-hidden main{display:none}
   </section>
   <div id="splitRow" hidden style="margin-bottom:12px"><label for="splitRange" style="font-size:14px;color:var(--mute)">Before / after divider</label><input type="range" id="splitRange" min="0" max="100" value="50" aria-label="Before and after divider position" style="width:100%"></div>
   <div id="msg" role="status" aria-live="polite"></div>
-  <div id="fbx" hidden style="margin-bottom:12px"><img id="fb" alt="Your finished image" style="width:100%;border-radius:10px"></div>
+  <div id="fbx" hidden style="margin-bottom:12px"><button id="fbxClose" type="button" aria-label="Close saved image">×</button><img id="fb" alt="Your finished image" style="width:100%;border-radius:10px"></div>
   <section data-panel="save" hidden><h2>Save options</h2>
   <div class="acts" style="margin-bottom:12px"><label style="flex:1;font-size:14px;color:var(--mute)">Crop <select id="saveCrop" aria-label="Save crop"><option value="none">No crop</option><option value="1">1:1 square</option><option value="0.8">4:5 portrait</option><option value="0.5625">9:16 portrait</option></select></label></div>
   <div class="acts" style="margin-bottom:12px"><label style="flex:1;font-size:14px;color:var(--mute)">Save format <select id="saveFmt" aria-label="Save format"><option value="png">PNG</option><option value="jpeg">JPG</option></select></label><label style="flex:1;font-size:14px;color:var(--mute)">Save size <select id="saveSize" aria-label="Save size"><option value="original">Original</option><option value="1600">1600px max</option><option value="1080">1080px max</option></select></label></div>
@@ -360,7 +361,7 @@ body.sheet-hidden main{display:none}
   <section data-effect-panel="fog" hidden><h2>Fog</h2><div id="g-fog"></div></section>
   <section data-effect-panel="haunt" hidden><h2>Haunted</h2><div id="g-haunt"></div></section>
 </main>
-<div class="bottombar"><button id="fsBtn2" type="button">Full screen</button><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><button class="pri" id="save">Save</button><button id="share" type="button" hidden>Share</button></div>
+<div class="bottombar"><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><button class="pri" id="save">Save</button><button id="share" type="button" hidden>Share</button></div>
 <script>
 (function(){
 var $=function(s){return document.querySelector(s)};
@@ -431,7 +432,7 @@ function sync(){
  renderStack();
  syncFogLoop();
 }
-function push(){var j=JSON.stringify(S);if(j===hist[hist.length-1])return;hist.push(j);if(hist.length>60)hist.shift();redoStack=[];sync()}
+function push(){var j=JSON.stringify(S);if(j===hist[hist.length-1])return;hist.push(j);if(hist.length>60)hist.shift();redoStack=[];hideFbx();sync()}
 $('#undo').onclick=function(){if(hist.length<2)return;redoStack.push(hist.pop());S=JSON.parse(hist[hist.length-1]);sync();draw()};
 $('#redo').onclick=function(){if(!redoStack.length)return;var nxt=redoStack.pop();hist.push(nxt);S=JSON.parse(nxt);sync();draw()};
 $('#reset').onclick=function(){S=Object.assign({},S0);S.brush=[];redoStack=[];sync();draw();push()};
@@ -783,13 +784,13 @@ $('#file').addEventListener('change',function(e){
  var inp=e.target,f=inp.files&&inp.files[0];if(!f)return;
  note('Loading photo…');
  function done(){inp.value=''}
- function ok(b){try{S=Object.assign({},S0);S.brush=[];hist=[JSON.stringify(S)];ov=null;sync();load(b);$('#msg').textContent=''}catch(er){note('Couldn’t show that photo: '+er.message)}done()}
+ function ok(b){try{S=Object.assign({},S0);S.brush=[];hist=[JSON.stringify(S)];ov=null;hideFbx();sync();load(b);$('#msg').textContent=''}catch(er){note('Couldn’t show that photo: '+er.message)}done()}
  function fail(){note('Couldn’t open that photo. Try a different one.');done()}
  function viaImg(){var fr=new FileReader();fr.onerror=fail;fr.onload=function(){var im=new Image();im.onerror=fail;im.onload=function(){ok(im)};im.src=fr.result};fr.readAsDataURL(f)}
  if(window.createImageBitmap)createImageBitmap(f).then(ok,viaImg);else viaImg();
 });
 $('#file2').addEventListener('change',function(e){var inp=e.target,f=inp.files&&inp.files[0];if(!f)return;
- function ok(b){ov=b;$('#msg').textContent='';draw();renderStack();inp.value=''}
+ function ok(b){ov=b;$('#msg').textContent='';hideFbx();draw();renderStack();inp.value=''}
  function fail(){$('#msg').textContent='Couldn’t open that overlay photo.';inp.value=''}
  function viaImg(){var fr=new FileReader();fr.onerror=fail;fr.onload=function(){var im=new Image();im.onerror=fail;im.onload=function(){ok(im)};im.src=fr.result};fr.readAsDataURL(f)}
  if(window.createImageBitmap)createImageBitmap(f).then(ok,viaImg);else viaImg()});
@@ -862,6 +863,12 @@ $('#save').onclick=function(){
  },mime,quality);
  });
 };
+// Finished-image card: dismiss it without reloading (a reload would wipe
+// the in-progress edit). The × sits above the image, never on it, so it
+// cannot interfere with the iOS press-and-hold save. The card also hides
+// on the next edit (see push()) and when a new photo is picked.
+function hideFbx(){var f=document.getElementById('fbx');if(f)f.hidden=true;}
+document.getElementById('fbxClose').addEventListener('click',hideFbx);
 // Share: shares the currently edited image (the same finished render
 // Save uses), only when the browser actually supports file sharing.
 // The button stays hidden otherwise, a cancelled share is silent, and
@@ -1221,10 +1228,10 @@ document.getElementById('prevFx').addEventListener('click',function(){cycleFx(-1
 document.getElementById('nextFx').addEventListener('click',function(){cycleFx(1)});
 function setFullscreen(on){
  document.body.classList.toggle('fullscreen',on);
- ['fsBtn','fsBtn2'].forEach(function(id){var b=document.getElementById(id);if(b)b.textContent=on?'Exit full screen':'Full screen';});
+ var b=document.getElementById('fsBtn');if(b)b.textContent=on?'Exit full screen':'Full screen';
  var ex=document.getElementById('fsExit');if(ex)ex.hidden=!on;
 }
-['fsBtn','fsBtn2'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',function(){setFullscreen(!document.body.classList.contains('fullscreen'))});});
+document.getElementById('fsBtn').addEventListener('click',function(){setFullscreen(!document.body.classList.contains('fullscreen'))});
 document.getElementById('fsExit').addEventListener('click',function(){setFullscreen(false)});
 function setSheetHidden(hid){
  document.body.classList.toggle('sheet-hidden',hid);
